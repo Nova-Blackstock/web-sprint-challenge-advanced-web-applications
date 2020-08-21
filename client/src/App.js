@@ -1,10 +1,22 @@
-import React, { useState } from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import PrivateRoute from './components/PrivateRoute'
 
+import { fetchApi } from './components/fetchApi'
+
+import BubblePage from './components/BubblePage'
 import Login from "./components/Login";
 import "./styles.scss";
 
 function App() {
+  const [colors, setColors] = useState([]);
+  
+  useEffect(() =>{
+    fetchApi()
+      .then((res) => setColors(res))
+      .catch((error) => console.log(error))
+  }, [])
+
   return (
     <Router>
       <div className="App">
@@ -14,6 +26,14 @@ function App() {
           display BubblePage when you're authenticated 
         */}
       </div>
+        <Switch>
+          <PrivateRoute path='/protected' component={BubblePage} />
+          <Route path='/login' component={Login} />
+          <Route>
+            <Login />
+          </Route>
+        </Switch>
+
     </Router>
   );
 }
