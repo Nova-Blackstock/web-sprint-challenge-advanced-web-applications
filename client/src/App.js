@@ -1,10 +1,16 @@
-import React, { useState } from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import React from "react";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import PrivateRoute from './components/PrivateRoute'
 
+import { fetchApi } from './components/fetchApi'
+
+import BubblePage from './components/BubblePage'
 import Login from "./components/Login";
 import "./styles.scss";
 
 function App() {
+  
+
   return (
     <Router>
       <div className="App">
@@ -14,6 +20,14 @@ function App() {
           display BubblePage when you're authenticated 
         */}
       </div>
+        <Switch>
+          <PrivateRoute path='/protected' component={BubblePage} />
+          <Route path='/login' component={Login} />
+          <Route>
+            <Login />
+          </Route>
+        </Switch>
+
     </Router>
   );
 }
